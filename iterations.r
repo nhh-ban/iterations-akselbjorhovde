@@ -60,10 +60,30 @@ stations_metadata_df %>%
   ) %>% 
   GQL(., .url = configs$vegvesen_url) %>%
   transform_volumes() %>% 
-  ggplot(aes(x=from, y=volume)) + 
+  ggplot(aes(x=from, y=volume, group = 1)) +
   geom_line() + 
   theme_classic()
 
+### 6: Legends:
 
-
-
+stations_metadata_df %>%
+  filter(latestData > Sys.Date() - days(7)) %>%
+  sample_n(1) %>%
+  {
+    name <- .$name #Store name for label
+    
+    vol_qry( #Extract data and create plot
+      id = .$id, 
+      from = to_iso8601(.$latestData, -4), 
+      to = to_iso8601(.$latestData, 0)
+    ) %>%
+    GQL(., .url = configs$vegvesen_url) %>%
+    transform_volumes() %>%
+    ggplot(aes(x = from, y = volume, group = 1)) +
+    geom_line() +
+    labs(title = name) +
+    xlab("Date") +
+    ylab("Number of cars") +
+    theme_classic() +
+    theme(axis.text.x = element_blank())
+  }

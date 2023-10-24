@@ -5,11 +5,11 @@
 # All tests are packed in a function test_stations_metadata that apples
 # all the aforementioned tests
 
+#Function tests that the dataframe contains the right data column names.
+#Thus that it is the right dataframe
 test_stations_metadata_colnames <-
   function(df) {
-    
     expected_colnames <- c("id", "name", "latestData", "lat", "lon")
-    
     if (all(colnames(df) == expected_colnames) == TRUE) {
       print("PASS: Data has the correct columns")
     } else{
@@ -17,6 +17,8 @@ test_stations_metadata_colnames <-
     }
   }
 
+#Function checks if the number of observations is within the acceptable range
+#between 5000 and 10000 observations.
 test_stations_metadata_nrows <-
   function(df) {
     
@@ -32,6 +34,7 @@ test_stations_metadata_nrows <-
     }
   }
 
+#Function tests that the each datacolumn is stored in the wanted dataformat
 test_stations_metadata_coltypes <-
   function(df) {
     expected_coltypes <-
@@ -44,7 +47,9 @@ test_stations_metadata_coltypes <-
       print("FAIL: Columns do not have the correct specification")
     }
   }
-  
+
+#Function tests that the dataframe does not miss equal to or more than 200
+#Observations
 test_stations_metadata_nmissing <-
   function(df) {
     max_miss_vals <- 200
@@ -56,6 +61,7 @@ test_stations_metadata_nmissing <-
     }
   }
 
+#Function tests that the timezone column has the right timezone.
 test_stations_metadata_latestdata_timezone <-
   function(df) {
     
@@ -66,7 +72,8 @@ test_stations_metadata_latestdata_timezone <-
     }
   }
 
-
+#Function runs all the previous functions to check if the dataframe is acceptable
+#or not.
 test_stations_metadata <- 
   function(df){
     test_stations_metadata_colnames(df)
